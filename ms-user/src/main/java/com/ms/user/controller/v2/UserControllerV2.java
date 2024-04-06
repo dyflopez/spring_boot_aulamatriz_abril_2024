@@ -2,9 +2,11 @@ package com.ms.user.controller.v2;
 
 import com.ms.user.controller.v2.doc.UserDoc;
 import com.ms.user.dto.UserDto;
+import com.ms.user.exception.MyHandleException;
 import com.ms.user.model.UserEntity;
 import com.ms.user.service.IUserService;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -44,5 +46,10 @@ public class UserControllerV2 implements UserDoc {
     @Override
     public ResponseEntity<UserEntity> updateById(UserEntity userEntity, String id) {
         return iUserService.updateById(userEntity,id);
+    }
+
+    @Override
+    public ResponseEntity<?> testError(String message) {
+        throw new MyHandleException(message);
     }
 }

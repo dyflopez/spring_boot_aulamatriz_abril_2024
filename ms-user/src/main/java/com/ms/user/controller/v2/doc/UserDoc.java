@@ -153,4 +153,8 @@ public interface UserDoc {
 
     @PatchMapping("/{id}")
     ResponseEntity<UserEntity> updateById(@RequestBody UserEntity userEntity ,@PathVariable("id") String id);
+
+
+    @GetMapping("/test-error")
+    ResponseEntity<?> testError(@RequestParam("message") String message);
 }
