@@ -21,7 +21,7 @@ public class UserDto {
     private String document;
 
     //^(?!\s*$)(?:Seven|Six|Two|One|Three| )$
-    @Pattern(regexp = "^(TI|CC|CE)+$", message = "the type document should be TI , CC or CE")
+    @Pattern(regexp = "^(?:TI|CC|CE)$", message = "the type document should be TI , CC or CE")
     private String typeDocument;
     // Enum  ETypeDocuments
     //private ETypeDocuments typeDocuments
