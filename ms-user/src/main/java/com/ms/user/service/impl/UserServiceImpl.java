@@ -1,9 +1,11 @@
 package com.ms.user.service.impl;
 
 import com.ms.user.dto.UserDto;
+import com.ms.user.exception.MyHandleException;
 import com.ms.user.model.UserEntity;
 import com.ms.user.repository.UserRepository;
 import com.ms.user.service.IUserService;
+import com.ms.user.utils.Constant;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +24,14 @@ public class UserServiceImpl implements IUserService {
     @Override
     public ResponseEntity<UserEntity> create(UserDto userDto) {
 
-        //TODO validar si el usuario existe
+        var user = this.userRepository
+                    .findByDocumentAndTypeDocumentOrderByCreatAtDesc(
+                            userDto.getDocument(),userDto.getTypeDocument()
+                    );
+        if(user.isPresent()){
+            throw new MyHandleException(Constant.USER_EXIST);
+        }
+
         UserEntity userEntity = new UserEntity();
         userEntity.setPhoneNumber(userDto.getPhoneNumber());
         userEntity.setName(userDto.getName());
@@ -57,7 +66,6 @@ public class UserServiceImpl implements IUserService {
                         .build()
                 );
     }
-
     @Override
     public ResponseEntity<?> deleteById(String id) {
 

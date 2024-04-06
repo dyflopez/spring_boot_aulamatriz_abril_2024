@@ -17,7 +17,7 @@ public class UserDto {
     @NotBlank
     @NotEmpty
     @Size(min = 8, max = 10)
-    @Pattern(regexp = "^[^0-9]*$", message = "the document should be just letters")
+    @Pattern(regexp = "^[0-9]*$", message = "the document should be just letters")
     private String document;
 
     //^(?!\s*$)(?:Seven|Six|Two|One|Three| )$
@@ -28,14 +28,14 @@ public class UserDto {
 
     @NotBlank
     @NotEmpty
-    @Pattern(regexp = "[A-Za-z]", message = "the document should be just letters")
+    @Pattern(regexp = "^[^0-9]*$", message = "the document should be just letters")
     @Size(min = 3)
     private String name;
 
 
     @NotBlank
     @NotEmpty
-    @Pattern(regexp = "[A-Za-z]", message = "the document should be just letters")
+    @Pattern(regexp = "^[^0-9]*$", message = "the document should be just letters")
     @Size(min = 4)
     private String lastname;
 
