@@ -41,4 +41,8 @@ public class UserControllerV2 implements UserDoc {
     {
         return this.iUserService.getByDocumentTypeDocument(document, typeDocument);
     }
+    @Override
+    public ResponseEntity<UserEntity> updateById(UserEntity userEntity, String id) {
+        return iUserService.updateById(userEntity,id);
+    }
 }
