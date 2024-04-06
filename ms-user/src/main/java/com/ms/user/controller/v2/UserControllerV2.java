@@ -21,7 +21,9 @@ public class UserControllerV2 implements UserDoc {
     }
 
     @Override
-    public ResponseEntity<UserEntity> update(UserEntity userEntity, String id) {
+    public ResponseEntity<UserEntity> updateById(UserEntity userEntity, String id) {
         return iUserService.updateById(userEntity,id);
     }
+
+
 }
