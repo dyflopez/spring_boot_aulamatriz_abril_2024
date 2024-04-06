@@ -19,4 +19,9 @@ public class UserControllerV2 implements UserDoc {
     public ResponseEntity<UserEntity> create(UserDto userDto) {
         return  this.iUserService.create(userDto);
     }
+
+    @Override
+    public ResponseEntity<UserEntity> getById(String id) {
+        return this.iUserService.getById(id);
+    }
 }
