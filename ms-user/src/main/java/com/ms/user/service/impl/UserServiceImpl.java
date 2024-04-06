@@ -60,6 +60,7 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public ResponseEntity<?> deleteById(String id) {
+
         this.userRepository.deleteById(id);
         return ResponseEntity
                 .ok()
@@ -68,24 +69,26 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public ResponseEntity<UserEntity> updateById(UserEntity userEntity, String id) {
-        var oldUser = this.userRepository.findById(id);
-        if(oldUser.isEmpty()){
-            return  ResponseEntity
-                    .status(HttpStatus.NOT_FOUND)
-                    .build();
-        }
 
-        var newUser =oldUser.get();
-
-        newUser.setName(userEntity.getName());
-        newUser.setLastname(userEntity.getLastname());
-        newUser.setDocument(userEntity.getDocument());
-        newUser.setPhoneNumber(userEntity.getPhoneNumber());
-        var updatedUser =this.userRepository.save(newUser);
-
-        return ResponseEntity.ok(updatedUser);
+        return userRepository.findById(id)
+                .map(user ->userRepository.save(buildUserEntity(user,userEntity)))
+                .map(ResponseEntity::ok)
+                .orElseGet(()->  ResponseEntity
+                        .status(HttpStatus.NOT_FOUND)
+                        .build());
     }
 
+    private UserEntity buildUserEntity(UserEntity oldUser,UserEntity user){
+        UserEntity newUser= new UserEntity();
+        newUser.setId(oldUser.getId());
+        newUser.setName(user.getName());
+        newUser.setLastname(user.getLastname());
+        newUser.setDocument(user.getDocument());
+        newUser.setPhoneNumber(user.getPhoneNumber());
+        newUser.setTypeDocument(user.getTypeDocument());
+        newUser.setCreatAt(user.getCreatAt());
+        return newUser;
+    }
     @Override
     public ResponseEntity<UserEntity> getByDocumentTypeDocument(String document,
                                                                 String typeDocument)

@@ -4,7 +4,10 @@ import com.ms.user.dto.UserDto;
 import com.ms.user.model.UserEntity;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -14,4 +17,6 @@ public interface UserDoc {
 
     @PostMapping
     ResponseEntity<UserEntity> create(@RequestBody UserDto userDto);
+    @PatchMapping("/{id}")
+    ResponseEntity<UserEntity> update(@RequestBody UserEntity userDto,@PathVariable("id") String id);
 }
