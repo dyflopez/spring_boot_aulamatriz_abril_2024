@@ -22,7 +22,8 @@ public interface UserDoc {
     @PostMapping
     ResponseEntity<UserEntity> create(@RequestBody UserDto userDto);
 
-    @Operation(summary = "find by id user", description = "this operation is for find by id ")
-    @ApiResponse(responseCode = "200", description = "the user with id user found", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE))
+    @Operation(summary = "find by id user", description = "This operation is for finding a user by ID. If the user with the specified ID is found, it will be returned. ID must be provided in the path parameter.")
+    @ApiResponse(responseCode = "200", description = "The user with the specified ID was found", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE))
     ResponseEntity<UserEntity> getById(@PathVariable String id);
+
 }
