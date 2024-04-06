@@ -7,11 +7,10 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "User" , description = "API exposed for management all user")
 @RequestMapping("/api/v2/user")
@@ -38,5 +37,97 @@ public interface UserDoc {
             )
     })
     @PostMapping
-    ResponseEntity<UserEntity> create(@RequestBody UserDto userDto);
+    ResponseEntity<UserEntity> create(@Valid @RequestBody UserDto userDto);
+
+    @Operation(summary = "get users"
+            ,description = "This operation is for get all the users")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "List of users",
+                    content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE)
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Internal Server Error",
+                    content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE)
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "endpoint not found",
+                    content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE)
+            ),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "Unauthorized",
+                    content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE)
+            )
+    })
+    @GetMapping
+     ResponseEntity<?> getAll();
+
+
+    @Operation(
+            summary = "find by id user",
+            description = "This operation is for finding a user by ID. If the user with the specified ID is found, it will be returned. ID must be provided in the path parameter.")
+    @ApiResponse(
+            responseCode = "200",
+            description = "The user with the specified ID was found",
+            content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE)
+    )
+    @GetMapping("/{id}")
+    ResponseEntity<UserEntity> getById(@PathVariable String id);
+
+    @Operation(
+            summary ="delete user"
+            ,description = "this operation is for delete a user"
+    )
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "user deleted",
+                            content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE)
+                    ),
+                    @ApiResponse (
+                            responseCode = "404",
+                            description = "endpoint not found",
+                            content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE)
+                    ),
+                    @ApiResponse (
+                            responseCode = "500",
+                            description = "internal server Error",
+                            content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE)
+                    )
+            }
+    )
+    @DeleteMapping("/{id}")
+    ResponseEntity<?> delete(@PathVariable("id") String id);
+
+
+    @Operation(summary = "Get users by type document and document")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "List of users",
+                    content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE)
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Internal Server Error",
+                    content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE)
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "endpoint not found",
+                    content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE)
+            ),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "Unauthorized",
+                    content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE)
+            )
+    })
+    @GetMapping("/find-by-document/")
+    ResponseEntity<UserEntity> getByDocumentAndTypeDocument(@RequestParam String document, @RequestParam String typeDocument);
 }

@@ -5,7 +5,9 @@ import com.ms.user.dto.UserDto;
 import com.ms.user.model.UserEntity;
 import com.ms.user.service.IUserService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 
@@ -18,5 +20,25 @@ public class UserControllerV2 implements UserDoc {
     @Override
     public ResponseEntity<UserEntity> create(UserDto userDto) {
         return  this.iUserService.create(userDto);
+    }
+
+    @Override
+    public ResponseEntity<?> getAll(){
+        return this.iUserService.getAll();
+    }
+
+    @Override
+    public ResponseEntity<UserEntity> getById(String id) {
+        return this.iUserService.getById(id);
+    }
+    @Override
+    public ResponseEntity<?> delete(@PathVariable("id") String id){
+        return this.iUserService.deleteById(id);
+    }
+
+    @Override
+    public ResponseEntity<UserEntity> getByDocumentAndTypeDocument(String document, String typeDocument)
+    {
+        return this.iUserService.getByDocumentTypeDocument(document, typeDocument);
     }
 }
