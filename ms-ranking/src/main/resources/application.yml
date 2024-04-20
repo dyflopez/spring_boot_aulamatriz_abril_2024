@@ -1,0 +1,15 @@
+server:
+  port: 8083
+
+spring:
+  application:
+    name: ms-ranking
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017
+      database: rankingdb
+springdoc:
+  api-docs:
+    path: /aulamatriz-doc
+  show-actuator: true
+  packages-to-scan: com.ms.ranking.service.msranking.controller
