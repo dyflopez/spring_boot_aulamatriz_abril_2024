@@ -58,7 +58,7 @@ public class HotelServiceImpl implements IHotelService {
         Optional<HotelEntity> hotelOp = this.iHotelRepository.findById(id);
 
         if(hotelOp.isPresent()){
-            return ResponseEntity.status(HttpStatus.FOUND).body(hotelOp.get());
+            return ResponseEntity.status(HttpStatus.OK).body(hotelOp.get());
         }
 
        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new HotelEntity());
