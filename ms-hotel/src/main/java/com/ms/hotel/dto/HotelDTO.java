@@ -14,7 +14,7 @@ public class HotelDTO {
 
     @NotBlank
     @NotEmpty
-    @Size(min = 8, max = 10)
+    @Size(min = 3, max = 10)
     private  String name;
 
     @NotBlank
