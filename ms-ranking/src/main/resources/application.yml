@@ -1,5 +1,5 @@
 server:
-  port: 8083
+  port: 8090
 
 spring:
   application:
@@ -13,3 +13,13 @@ springdoc:
     path: /aulamatriz-doc
   show-actuator: true
   packages-to-scan: com.ms.ranking.service.msranking.controller
+
+#Eureka
+eureka:
+  instance:
+    prefer-ip-address: false
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka
