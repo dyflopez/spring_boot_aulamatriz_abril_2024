@@ -9,6 +9,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Check;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -20,11 +22,9 @@ public class UserDto {
     @Pattern(regexp = "^[0-9]*$", message = "the document should be just letters")
     private String document;
 
-    //^(?!\s*$)(?:Seven|Six|Two|One|Three| )$
     @Pattern(regexp = "^(?:TI|CC|CE)$", message = "the type document should be TI , CC or CE")
     private String typeDocument;
-    // Enum  ETypeDocuments
-    //private ETypeDocuments typeDocuments
+
 
     @NotBlank
     @NotEmpty

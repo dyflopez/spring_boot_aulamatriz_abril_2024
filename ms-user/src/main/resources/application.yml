@@ -24,3 +24,12 @@ control:
   exception:
     business: Business exception
     system: System exception
+#Eureka
+eureka:
+  instance:
+    prefer-ip-address: false
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka

@@ -52,4 +52,9 @@ public class UserControllerV2 implements UserDoc {
     public ResponseEntity<?> testError(String message) {
         throw new MyHandleException(message);
     }
+
+    @Override
+    public ResponseEntity getRankingsById(String id) {
+        return this.iUserService.getReviewsByUserId(id);
+    }
 }

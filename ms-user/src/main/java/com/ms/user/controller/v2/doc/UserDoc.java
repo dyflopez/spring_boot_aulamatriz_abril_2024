@@ -157,4 +157,16 @@ public interface UserDoc {
 
     @GetMapping("/test-error")
     ResponseEntity<?> testError(@RequestParam("message") String message);
+
+
+    @Operation(
+            summary = "find by id user with rankings",
+            description = "This operation is for finding a user by ID. If the user with the specified ID is found, it will be returned. ID must be provided in the path parameter.")
+    @ApiResponse(
+            responseCode = "200",
+            description = "The user with the specified ID was found",
+            content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE)
+    )
+    @GetMapping("/{id}/rankings")
+    ResponseEntity<UserEntity> getRankingsById(@PathVariable String id);
 }

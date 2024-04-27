@@ -1,7 +1,11 @@
 package com.ms.user.service.impl;
 
+import com.ms.user.dto.HotelDto;
+import com.ms.user.dto.RankingDto;
 import com.ms.user.dto.UserDto;
+import com.ms.user.dto.UserRankingsDTO;
 import com.ms.user.exception.MyHandleException;
+import com.ms.user.external.serice.IHotelServiceFeign;
 import com.ms.user.model.UserEntity;
 import com.ms.user.repository.UserRepository;
 import com.ms.user.service.IUserService;
@@ -10,16 +14,23 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
 public class UserServiceImpl implements IUserService {
 
     private final UserRepository userRepository;
+
+    private final RestTemplate restTemplate;
+
+    private final IHotelServiceFeign iHotelServiceFeign;
 
     @Override
     public ResponseEntity<UserEntity> create(UserDto userDto) {
@@ -110,5 +121,49 @@ public class UserServiceImpl implements IUserService {
                 .orElseGet(
                         () -> ResponseEntity.status(HttpStatus.NOT_FOUND
                         ).build());
+    }
+
+    @Override
+    public ResponseEntity getReviewsByUserId(String id) {
+        UserRankingsDTO userRankingsDTO = this.userRepository
+                .findById(id)
+                .map( user -> UserRankingsDTO
+                        .builder()
+                        .id(user.getId())
+                        .name(user.getName())
+                        .lastname(user.getLastname())
+                        .document(user.getDocument())
+                        .typeDocument(user.getTypeDocument())
+                        .phoneNumber(user.getPhoneNumber())
+                        .build()
+                )
+                .orElseThrow(() -> new MyHandleException("User does not exits"));
+        RankingDto[] rankingDtos = this
+                .restTemplate
+                .getForObject(
+                        "http://MS-RANKING/api/v1/ranking/find-by-user-id/"+userRankingsDTO.getId()
+                        , RankingDto[].class
+                        );
+        if(rankingDtos != null){
+            var rankings  = Arrays.stream(rankingDtos).toList();
+            var rankingsFull =rankings
+                    .stream()
+                    .peek(ranking -> {
+
+                       /* ResponseEntity<HotelDto> hotelResponse =
+                                this.restTemplate.getForEntity(
+                                        "http://MS-HOTEL/api/v1/hotel/"+ranking.getHotelId(),
+                                        HotelDto.class
+                                );*/
+
+                        var hotel = this.iHotelServiceFeign.getHotel(ranking.getHotelId());
+                        ranking.setHotel(hotel);
+
+                    })
+                    .collect(Collectors.toList());
+
+            userRankingsDTO.setRankings(rankingsFull);
+        }
+        return  ResponseEntity.ok(userRankingsDTO);
     }
 }

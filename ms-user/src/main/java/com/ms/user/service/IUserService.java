@@ -20,4 +20,7 @@ public interface IUserService {
     ResponseEntity<UserEntity> updateById(UserEntity userEntity , String id);
     //Juan Pablo rodriguez
     ResponseEntity<UserEntity> getByDocumentTypeDocument(String document, String typeDocument);
+
+
+    ResponseEntity getReviewsByUserId(String id);
 }
