@@ -10,14 +10,22 @@ spring:
           uri: lb://MS-USER
           predicates:
             - Path=/api/v2/user/**
+          filters:
+            - AuthFilter
         - id: MS-RANKINGS
           uri: lb://MS-RANKINGS
           predicates:
             - Path=/api/v1/ranking/**
+          filters:
+            - AuthFilter
         - id: MS-HOTEL
           uri: lb://MS-HOTEL
           predicates:
             - Path=/api/v1/hotel/**
+        - id: AUTH-SERVICE
+          uri: lb://AUTH-SERVICE
+          predicates:
+            - Path=/auth/**
 #Eureka
 eureka:
   instance:

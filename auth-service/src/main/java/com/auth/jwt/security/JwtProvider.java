@@ -1,5 +1,6 @@
 package com.auth.jwt.security;
 
+import com.auth.jwt.dto.RequestDto;
 import com.auth.jwt.model.AuthUser;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
@@ -44,6 +45,33 @@ public class JwtProvider {
                 .expiration(this.convertLocalDateTimeToDate(now.plusHours(12)))
                 .signWith(Keys.hmacShaKeyFor(secret.getEncoded()))
                 .compact();
+    }
+
+    private  boolean isAdmin(String token){
+        return Jwts
+                .parser()
+                .verifyWith(Keys.hmacShaKeyFor(secret.getEncoded()))
+                .build()
+                .parseSignedClaims(token)
+                .getPayload()
+                .get("role")
+                .equals("admin");
+    }
+
+    public boolean validate(String token, RequestDto requestDto){
+        try {
+            Jwts
+                    .parser()
+                    .verifyWith(Keys.hmacShaKeyFor(secret.getEncoded()))
+                    .build()
+                    .parseSignedClaims(token);
+        }catch (Exception e){
+            return false;
+        }
+        if(!isAdmin(token) && routeValidator.isAdmin(requestDto) ){
+                return false;
+        }
+        return true;
     }
 
     public String getUserNameFromToken(String token){
