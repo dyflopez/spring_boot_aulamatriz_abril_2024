@@ -1,9 +1,9 @@
 server:
-  port: 8081
+  port: 0
 
 spring:
   application:
-    name: ms-user
+    name: MS-USER
   datasource:
     url: jdbc:mysql://localhost:3306/user-db
     username: root

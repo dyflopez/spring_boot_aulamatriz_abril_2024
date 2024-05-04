@@ -1,0 +1,29 @@
+server:
+  port: 8084
+spring:
+  application:
+    name: API-GATEWAY
+  cloud:
+    gateway:
+      routes:
+        - id: MS-USER
+          uri: lb://MS-USER
+          predicates:
+            - Path=/api/v2/user/**
+        - id: MS-RANKINGS
+          uri: lb://MS-RANKINGS
+          predicates:
+            - Path=/api/v1/ranking/**
+        - id: MS-HOTEL
+          uri: lb://MS-HOTEL
+          predicates:
+            - Path=/api/v1/hotel/**
+#Eureka
+eureka:
+  instance:
+    prefer-ip-address: false
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka

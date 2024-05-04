@@ -1,9 +1,9 @@
 server:
-  port: 8090
+  port: 0
 
 spring:
   application:
-    name: ms-ranking
+    name: MS-RANKINGS
   data:
     mongodb:
       uri: mongodb://localhost:27017
